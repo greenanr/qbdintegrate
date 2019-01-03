@@ -1,12 +1,14 @@
-const http = require('http');
+﻿/*
+ * This file is part of quickbooks-js
+ * https://github.com/RappidDevelopment/quickbooks-js
+ *
+ * Based on qbws: https://github.com/johnballantyne/qbws
+ *
+ * (c) 2015 johnballantyne
+ * (c) 2016 Rappid Development LLC
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-const PORT = process.env.PORT || 5000;
-
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World\n');
-});
-server.listen(PORT, () => {
-  console.log(`Server running at on ${PORT}/`);
-});
+module.exports = require('./lib/server');
