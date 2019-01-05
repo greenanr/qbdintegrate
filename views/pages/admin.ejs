@@ -16,14 +16,15 @@
         <div class="container row">
             <div class="jumbotron col-lg-4 pull-center">
             <table>
-                <% print.forEach(function(users) { %>
+                <% users.forEach(function(user) { %>
                     <tr>
-                    <td><%= users.qbdusername %></td>
-                    <td><%= users.qbdpassword %></td>
-                    <td><%= users.qbdcompanyfile %></td>
-                    <td><%= users.qbduuid %></td>
-                    <td><%= users.pexcompanyid %></td>
-                    <td><%= users.pexauthenticationkey %></td>
+                    <td><%= user.id %></td>
+                    <td><%= user.qbdusername %></td>
+                    <td><%= user.qbdpassword %></td>
+                    <td><%= user.qbdcompanyfile %></td>
+                    <td><%= user.uuid %></td>
+                    <td><%= user.pexcompanyid %></td>
+                    <td><%= user.pexauthenticationkey %></td>
                     </tr>
                 <% }); %>
                 </table>
