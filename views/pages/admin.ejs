@@ -15,7 +15,19 @@
 
         <div class="container row">
             <div class="jumbotron col-lg-4 pull-center">
-                <form action="/changedetails" method="post">
+            <table>
+                <% print.forEach(function(users) { %>
+                    <tr>
+                    <td><%= users.qbdusername %></td>
+                    <td><%= users.qbdpassword %></td>
+                    <td><%= users.qbdcompanyfile %></td>
+                    <td><%= users.qbduuid %></td>
+                    <td><%= users.pexcompanyid %></td>
+                    <td><%= users.pexauthenticationkey %></td>
+                    </tr>
+                <% }); %>
+                </table>
+                <!-- <form action="/changedetails" method="post">
                     <div>
                         <label>Quickbooks Username:</label>
                         <input type="text" name="qbdusername"/>
@@ -47,7 +59,7 @@
                     <div>
                         <input class="btn btn-primary" type="submit" value="Change"/>
                     </div>
-                </form>                  
+                </form>  -->                
             </div>          
         </div>
         <%- include('../partials/footer.ejs')%>
