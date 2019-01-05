@@ -15,30 +15,38 @@
 
         <div class="container row">
             <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Quickbooks Username</th>
-                        <th>Quickbooks Password</th>
-                        <th>Quickbooks Company File</th>
-                        <th>Quickbooks UUID</th>
-                        <th>PEX Company Id</th>
-                        <th>PEX Auth Key</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
                 <tbody>
                 <% qbdUsers.forEach(function(user) { %>
                     <tr>
-                    <td><%= user.id %></td>
-                    <td><%= user.qbdusername %></td>
-                    <td><%= user.qbdpassword %></td>
-                    <td><%= user.qbdcompanyfile %></td>
-                    <td><%= user.uuid %></td>
-                    <td><%= user.pexcompanyid %></td>
-                    <td><%= user.pexauthenticationkey %></td>
-                    <td><a href="/edituser"><img src="../images/pencil-edit-button.png" /></a></td>
+                        <td>Quickbooks Username:</td>
+                        <td><input type="text" name="qbdusername" value=<%= user.id %> /></td>
                     </tr>
+                    <tr>
+                        <td>Quickbooks Password:</td>
+                        <td><%= user.qbdusername %></td>
+                    </tr>
+                    <tr>
+                        <td>Quickbooks CompanyFile:</td>
+                        <td><%= user.qbdpassword %></td>
+                    </tr>
+                    <tr>
+                        <td>Quickbooks CompanyFile:</td>
+                        <td><%= user.qbdcompanyfile %></td>
+                    </tr>
+                    <tr>
+                        <td>Quickbooks UUID:</td>
+                        <td><%= user.uuid %></td>
+                        <td><img src="." /></td>
+                    </tr>
+                    <tr>
+                        <td>PEX Company ID:</td>
+                        <td><%= user.pexcompanyid %></td>
+                    </tr>
+                    <tr>
+                        <td>PEX Authentication Key:</td>
+                        <td><%= user.pexauthenticationkey %></td>
+                    </tr>
+            
                 <% }); %>
                 </tbody>
             </table>
