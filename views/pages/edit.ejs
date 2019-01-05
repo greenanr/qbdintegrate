@@ -19,23 +19,19 @@
                 <% qbdUsers.forEach(function(user) { %>
                     <tr>
                         <td>Quickbooks Username:</td>
-                        <td><input type="text" name="qbdusername" value=<%= user.id %> /></td>
+                        <td><input type="text" name="qbdusername" value=<%= user.username %> /></td>
                     </tr>
                     <tr>
                         <td>Quickbooks Password:</td>
-                        <td><%= user.qbdusername %></td>
+                        <td><input type="text" name="qbdpassword" value=<%= user.password %> /></td>
                     </tr>
                     <tr>
                         <td>Quickbooks CompanyFile:</td>
-                        <td><%= user.qbdpassword %></td>
-                    </tr>
-                    <tr>
-                        <td>Quickbooks CompanyFile:</td>
-                        <td><%= user.qbdcompanyfile %></td>
+                        <td><input type="text" name="qbdcompanyfile" value=<%= user.qbdcompanyfile %> /></td>
                     </tr>
                     <tr>
                         <td>Quickbooks UUID:</td>
-                        <td><%= user.uuid %></td>
+                        <td><input type="text" name="qbdcompanyfile" value=<%= user.uuid %> /></td>
                         <td><img src="." /></td>
                     </tr>
                     <tr>
