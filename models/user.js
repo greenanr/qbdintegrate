@@ -40,4 +40,4 @@ sequelize.sync()
     .catch(error => console.log('This error occured', error));
 */
 // export User model for use in other files.
-module.exports = User;
+//module.exports = User;
