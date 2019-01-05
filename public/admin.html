@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <title>Admin Page</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    </head>
+    <body class="container">
+        <div class="page-header">
+            <h1>SQBD Integration</h1>
+        </div>
+
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/admin">Home</a></li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        <div class="container row">
+            <div class="jumbotron col-sm-4 pull-center">
+                <form action="/changedetails" method="post">
+                    <div>
+                        <label>Quickbooks Username:</label>
+                        <input type="text" name="qbdusername"/>
+                    </div>
+                    <div>
+                        <label>Quickbooks Password:</label>
+                        <input type="password" name="qbdpassword"/>
+                    </div>
+                    <div>
+                        <label>Quickbooks CompanyFile:</label>
+                        <input type="text" name="qbdcompanyfile"/>
+                    </div>    
+                    <div>
+                        <label>Quickbooks CompanyFile:</label>
+                        <input type="text" name="qbdcompanyfile"/>
+                    </div>   
+                    <div>
+                        <label>Quickbooks CompanyFile:</label>
+                        <input type="text" name="qbdcompanyfile"/>
+                    </div>   
+                    <div>
+                        <label>PEX CompanyID:</label>
+                        <input type="text" name="pexcompanyid"/>
+                    </div>  
+                      <div>
+                        <label>PEX Authentication Key:</label>
+                        <input type="text" name="pexauthenticationkey"/>
+                    </div>  
+                    <div>
+                        <input class="btn btn-primary" type="submit" value="Change"/>
+                    </div>
+                </form>                  
+            </div>          
+        </div>
+    </body>
+</html>
