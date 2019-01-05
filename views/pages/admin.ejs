@@ -14,8 +14,19 @@
         </nav>
 
         <div class="container row">
-            <div class="jumbotron col-lg-4 pull-center">
-            <table>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Quickbooks Username</th>
+                        <th>Quickbooks Password</th>
+                        <th>Quickbooks Company File</th>
+                        <th>Quickbooks UUID</th>
+                        <th>PEX Company Id</th>
+                        <th>PEX Auth Key</th>
+                    </tr>
+                </thead>
+                <tbody>
                 <% qbdUsers.forEach(function(user) { %>
                     <tr>
                     <td><%= user.id %></td>
@@ -27,7 +38,8 @@
                     <td><%= user.pexauthenticationkey %></td>
                     </tr>
                 <% }); %>
-                </table>
+                </tbody>
+            </table>
                 <!-- <form action="/changedetails" method="post">
                     <div>
                         <label>Quickbooks Username:</label>
@@ -60,8 +72,7 @@
                     <div>
                         <input class="btn btn-primary" type="submit" value="Change"/>
                     </div>
-                </form>  -->                
-            </div>          
+                </form>  -->                         
         </div>
         <%- include('../partials/footer.ejs')%>
     </body>
