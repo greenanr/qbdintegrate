@@ -52,13 +52,13 @@ function buildRequests(callback) {
     var xml = '';
     amqp.connect(process.env.CLOUDAMQP_URL + "?heartbeat=60", function(err, conn) {
         if (err) {
-          console.error("[AMQP XML Build] ", err.message);
+          console.error("[AMQP XML Build 1] ", err.message);
         }
 
 
         conn.on("error", function(err) {
           if (err.message !== "Connection closing") {
-            console.error("[AMQP XML Build] connection error", err.message);
+            console.error("[AMQP XML Build 2] connection error", err.message);
           }
         });
 
@@ -67,21 +67,25 @@ function buildRequests(callback) {
         
         conn.createChannel(function(err, ch) {
             
-            if (closeOnErr(err, conn)) return;
+            if (closeOnErr(err)) return;
 
             ch.on("error", function(err) {
-              console.error("[AMQP] channel error", err.message);
+              console.error("[AMQP XML Build 3] channel error", err.message);
             });
             ch.on("close", function() {
-              console.log("[AMQP] channel closed");
+              console.log("[AMQP XML Build 4] channel closed");
             });
             //ch.prefetch(10);
             ch.assertQueue("xml-queue", { durable: true }, function(err, _ok) {
               if (closeOnErr(err)) return;
               //ch.consume("xml-queue", processMsg, { noAck: false });
               var gotMessage = ch.get("xml-queue", {noAck: false}, function (err, msgOrFalse) {
-                    console.log("Got Message from XML queue" + msgOrFalse.content.toString());
-                    ch.ack(msgOrFalse);
+                    if (closeonErr(err)) return;
+
+                    if (msgOrFalse) {
+                        console.log("Got Message from XML queue" + msgOrFalse.content.toString());
+                        ch.ack(msgOrFalse);
+                    }
                     ch.close();
               });
             });
