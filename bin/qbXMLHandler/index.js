@@ -63,7 +63,7 @@ function buildRequests(connection, callback) {
         amqpLib = connection;
     } else {
         amqp.connect(process.env.CLOUDAMQP_URL + "?heartbeat=60", function(err, conn) {
-        
+            
             if (err) {
                 console.error("[AMQP XML Build 1] ", err.message);
             }
