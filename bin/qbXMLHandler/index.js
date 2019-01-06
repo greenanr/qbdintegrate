@@ -93,17 +93,16 @@ function buildRequests(callback) {
                     if (closeOnErr(err)) return;
 
                     if (msgOrFalse) {
-                        console.log("Got Message from XML queue" + msgOrFalse.content.toString());
+                        console.log("Got Message from XML queue:" + msgOrFalse.content.toString());
+                        requests.push(msgOrFalse.content.toString());
                         ch.ack(msgOrFalse);
+                    } else {
+                        requests.push('');
                     }
                     ch.close();
+                    return callback(null, requests);
               });
             });
         });
     });
-
-    console.log("XML to push: " + xml);
-    requests.push(xml);
-    return callback(null, requests);
 }
-
