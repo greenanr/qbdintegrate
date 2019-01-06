@@ -12,8 +12,6 @@
  */
 var amqp = require('amqplib/callback_api');
 
-var amqpConn = null;
-
 // Public
 module.exports = {
 
@@ -53,19 +51,23 @@ function buildRequests(callback) {
     var xml = '';
     amqp.connect(process.env.CLOUDAMQP_URL + "?heartbeat=60", function(err, conn) {
         if (err) {
-          console.error("[AMQP] XML Build", err.message);
+          console.error("[AMQP XML Build] ", err.message);
         }
+
+
         conn.on("error", function(err) {
           if (err.message !== "Connection closing") {
-            console.error("[AMQP] conn error", err.message);
+            console.error("[AMQP XML Build] connection error", err.message);
           }
         });
 
-        console.log("[AMQP] XML Build connected");
-        amqpConn = conn;
+        console.log("[AMQP XML Build] connected");
         
-        amqpConn.createChannel(function(err, ch) {
-            //if (closeOnErr(err)) return;
+        
+        conn.createChannel(function(err, ch) {
+            
+            if (closeOnErr(err, conn)) return;
+
             ch.on("error", function(err) {
               console.error("[AMQP] channel error", err.message);
             });
@@ -74,7 +76,7 @@ function buildRequests(callback) {
             });
             //ch.prefetch(10);
             ch.assertQueue("xml-queue", { durable: true }, function(err, _ok) {
-              if (closeOnErr(err)) return;
+              //if (closeOnErr(err)) return;
               //ch.consume("xml-queue", processMsg, { noAck: false });
               var gotMessage = ch.get("xml-queue", {noAck: false}, function (err, msgOrFalse) {
                     console.log("Got Message from XML queue" + msgOrFalse.content.toString());
@@ -84,6 +86,13 @@ function buildRequests(callback) {
               });
             });
         });
+
+        function closeOnErr(err, connection) {
+          if (!err) return false;
+          console.error("[AMQP XML Build] error", err);
+          connection.close();
+          return true;
+        }
 
     });
 
