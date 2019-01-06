@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/greenanr/qbdintegrate#readme",
   "dependencies": {
+    "JSONStream": "^1.3.5",
     "amqplib": "^0.5.3",
     "bcrypt": "^3.0.3",
     "body-parser": "^1.18.3",
