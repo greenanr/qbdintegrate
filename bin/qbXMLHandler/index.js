@@ -47,10 +47,20 @@ module.exports = {
     }
 };
 
+function closeOnErr(err) {
+
+    if (!err) return false;
+
+    console.error("[AMQP XML Build] error", err);
+    amqpLib.close();
+    return true;
+}
+
 function buildRequests(callback) {
     var requests = new Array();
     var xml = '';
     amqp.connect(process.env.CLOUDAMQP_URL + "?heartbeat=60", function(err, conn) {
+        
         if (err) {
           console.error("[AMQP XML Build 1] ", err.message);
         }
@@ -80,7 +90,7 @@ function buildRequests(callback) {
               if (closeOnErr(err)) return;
               //ch.consume("xml-queue", processMsg, { noAck: false });
               var gotMessage = ch.get("xml-queue", {noAck: false}, function (err, msgOrFalse) {
-                    if (closeonErr(err)) return;
+                    if (closeOnErr(err)) return;
 
                     if (msgOrFalse) {
                         console.log("Got Message from XML queue" + msgOrFalse.content.toString());
@@ -97,11 +107,3 @@ function buildRequests(callback) {
     return callback(null, requests);
 }
 
-function closeOnErr(err) {
-
-    if (!err) return false;
-
-    console.error("[AMQP XML Build] error", err);
-    amqpLib.close();
-    return true;
-}
