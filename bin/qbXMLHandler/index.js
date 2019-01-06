@@ -12,6 +12,7 @@
  */
 var amqp = require('amqplib/callback_api');
 
+var amqpLib = null;
 // Public
 module.exports = {
 
@@ -62,7 +63,7 @@ function buildRequests(callback) {
         });
 
         console.log("[AMQP XML Build] connected");
-        
+        amqpLib = conn;
         
         conn.createChannel(function(err, ch) {
             
@@ -76,27 +77,27 @@ function buildRequests(callback) {
             });
             //ch.prefetch(10);
             ch.assertQueue("xml-queue", { durable: true }, function(err, _ok) {
-              //if (closeOnErr(err)) return;
+              if (closeOnErr(err)) return;
               //ch.consume("xml-queue", processMsg, { noAck: false });
               var gotMessage = ch.get("xml-queue", {noAck: false}, function (err, msgOrFalse) {
                     console.log("Got Message from XML queue" + msgOrFalse.content.toString());
                     ch.ack(msgOrFalse);
                     ch.close();
-
               });
             });
         });
-
-        function closeOnErr(err, connection) {
-          if (!err) return false;
-          console.error("[AMQP XML Build] error", err);
-          connection.close();
-          return true;
-        }
-
     });
 
     console.log("XML to push: " + xml);
     requests.push(xml);
     return callback(null, requests);
+}
+
+function closeOnErr(err) {
+
+    if (!err) return false;
+
+    console.error("[AMQP XML Build] error", err);
+    amqpLib.close();
+    return true;
 }
