@@ -81,35 +81,27 @@ function buildRequests(callback) {
               console.log("[AMQP XML Build 4] channel closed");
             });
             
-            ch.prefetch(10);
             
-            ch.assertQueue("xml-queue", { durable: true }, function(err, _ok) {
+                  
+            ch.get("xml-queue", {noAck: false}, function (err, msgOrFalse) {
                 if (err) {
                     conn.close();
                     requests.push('');
                     return callback(null, requests);
                 }
-                  //ch.consume("xml-queue", processMsg, { noAck: false });
-                  var gotMessage = ch.get("xml-queue", {noAck: true}, function (err, msgOrFalse) {
-                    if (err) {
-                        conn.close();
-                        requests.push('');
-                        return callback(null, requests);
-                    }
 
+                if (msgOrFalse) {
+                    console.log("[AMQP XML Build] Got Message from XML queue:" + msgOrFalse.content.toString());
+                    ch.ack(msgOrFalse);
+                    requests.push(msgOrFalse.content.toString());
+                } else {
+                    console.log("[AMQP XML Build] No message available");
+                    requests.push('');
+                }
 
-                    if (msgOrFalse) {
-                        console.log("[AMQP XML Build] Got Message from XML queue:" + msgOrFalse.content.toString());
-                        requests.push(msgOrFalse.content.toString());
-                        ch.ack(msgOrFalse);
-                    } else {
-                        console.log("[AMQP XML Build] No message available");
-                        requests.push('');
-                    }
-                    conn.close();
-                    console.log("[AMQP XML Build] Closed connection");
-                    return callback(null, requests);
-              });
+                conn.close();
+                console.log("[AMQP XML Build] Closed connection");
+                return callback(null, requests);
             });
         });
     });
