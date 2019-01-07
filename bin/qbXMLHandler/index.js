@@ -12,6 +12,8 @@
  */
 var amqp = require('amqplib/callback_api');
 
+var db = require('./database.js');
+
 // Public
 module.exports = {
 
@@ -51,7 +53,7 @@ module.exports = {
 function buildRequests(callback) {
     var requests = new Array();
 
-    amqp.connect(process.env.CLOUDAMQP_URL + "?heartbeat=60", function(err, conn) {
+    /*amqp.connect(process.env.CLOUDAMQP_URL + "?heartbeat=60", function(err, conn) {
         
         if (err) {
             console.error("[AMQP XML Build 1] ", err.message);
@@ -80,8 +82,6 @@ function buildRequests(callback) {
             ch.on("close", function() {
               console.log("[AMQP XML Build 4] channel closed");
             });
-
-            ch.prefetch(1);
             
             ch.assertQueue("xml-queue", { durable: true }, function(err, _ok) {
                 if (err) {
@@ -89,7 +89,7 @@ function buildRequests(callback) {
                     requests.push('');
                     return callback(null, requests);
                 }
-                ch.consume("xml-queue", { noAck: false }, function(msg){
+                ch.get("xml-queue", { noAck: false }, function(msg){
                     if (msg) {
                         console.log("[AMQP XML Build] Got Message from XML queue:" + msg.content.toString());
                         requests.push(msg.content.toString());
@@ -108,5 +108,24 @@ function buildRequests(callback) {
                 });
             });
         });
+    }); */
+
+   
+    //UserID or UUID
+    db.xmlPop('1', function(err, res){
+        if (res == null && res.length == 1) {
+            console.log("[AMQP XML Build] No message available");
+            requests.push('');
+        } else {
+            console.log("[AMQP XML Build] Found message for UserID: " + res[0].userid + '\nXML: \n' + res[0].xml);
+            // Push the XML on to the request for QBD
+            requests.push(res[0].xml);
+            //Delete the request from the queue and stick it into our log with a timestamp.. Do this in the response next time.
+            db.xmlSwitch(res[0].id);
+        }
+    
+    console.log("[AMQP XML Build] Closed connection");
+    return callback(null, requests);
+
     });
 }
