@@ -95,11 +95,14 @@ function buildRequests(callback) {
             function processMsg(msg) {
                 if (msg) {
                     console.log("[AMQP XML Build] Got Message from XML queue:" + msg.content.toString());
-                    ch.ack(msg);
                     requests.push(msg.content.toString());
+                    ch.ack(msg);
+                    ch.close();
+                    
                 } else {
                     console.log("[AMQP XML Build] No message available");
                     requests.push('');
+                    ch.close();
                 }
 
                 conn.close();
