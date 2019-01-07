@@ -4,7 +4,7 @@
   "description": "Quickbooks Integration Server",
   "main": "./bin/run",
   "scripts": {
-    "start": "./bin/run",
+    "start": "./bin/run"
   },
   "repository": {
     "type": "git",
