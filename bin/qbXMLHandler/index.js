@@ -46,6 +46,8 @@ module.exports = {
     }
 };
 
+
+
 function buildRequests(callback) {
     var requests = new Array();
 
@@ -88,7 +90,7 @@ function buildRequests(callback) {
                     return callback(null, requests);
                 }
                   //ch.consume("xml-queue", processMsg, { noAck: false });
-                  var gotMessage = ch.get("xml-queue", {noAck: false}, function (err, msgOrFalse) {
+                  var gotMessage = ch.get("xml-queue", {noAck: true}, function (err, msgOrFalse) {
                     if (err) {
                         conn.close();
                         requests.push('');
