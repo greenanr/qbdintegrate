@@ -82,7 +82,11 @@ function buildRequests(callback) {
             ch.prefetch(10);
             
             ch.assertQueue("xml-queue", { durable: true }, function(err, _ok) {
-              if (closeOnErr(err)) return;
+                if (err) {
+                    conn.close();
+                    requests.push('');
+                    return callback(null, requests);
+                }
                   //ch.consume("xml-queue", processMsg, { noAck: false });
                   var gotMessage = ch.get("xml-queue", {noAck: false}, function (err, msgOrFalse) {
                     if (err) {
