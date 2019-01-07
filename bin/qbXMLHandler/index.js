@@ -80,20 +80,23 @@ function buildRequests(callback) {
             ch.on("close", function() {
               console.log("[AMQP XML Build 4] channel closed");
             });
+
+            ch.prefetch(1);
             
-            
-                  
-            ch.get("xml-queue", {noAck: false}, function (err, msgOrFalse) {
+            ch.assertQueue("xml-queue", { durable: true }, function(err, _ok) {
                 if (err) {
                     conn.close();
                     requests.push('');
                     return callback(null, requests);
                 }
+                ch.consume("xml-queue", processMsg, { noAck: false });
+            });
 
-                if (msgOrFalse) {
-                    console.log("[AMQP XML Build] Got Message from XML queue:" + msgOrFalse.content.toString());
-                    ch.ack(msgOrFalse);
-                    requests.push(msgOrFalse.content.toString());
+            function processMsg(msg) {
+                if (msg) {
+                    console.log("[AMQP XML Build] Got Message from XML queue:" + msg.content.toString());
+                    ch.ack(msg);
+                    requests.push(msg.content.toString());
                 } else {
                     console.log("[AMQP XML Build] No message available");
                     requests.push('');
@@ -102,7 +105,8 @@ function buildRequests(callback) {
                 conn.close();
                 console.log("[AMQP XML Build] Closed connection");
                 return callback(null, requests);
-            });
+            }
+             
         });
     });
 }
