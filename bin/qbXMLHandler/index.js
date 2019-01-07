@@ -89,27 +89,24 @@ function buildRequests(callback) {
                     requests.push('');
                     return callback(null, requests);
                 }
-                ch.consume("xml-queue", processMsg, { noAck: false });
-            });
-
-            function processMsg(msg) {
-                if (msg) {
-                    console.log("[AMQP XML Build] Got Message from XML queue:" + msg.content.toString());
-                    requests.push(msg.content.toString());
-                    ch.ack(msg);
-                    ch.close();
+                ch.consume("xml-queue", { noAck: false }, function(msg){
+                    if (msg) {
+                        console.log("[AMQP XML Build] Got Message from XML queue:" + msg.content.toString());
+                        requests.push(msg.content.toString());
+                        ch.ack(msg);
+                        ch.close();
                     
-                } else {
-                    console.log("[AMQP XML Build] No message available");
-                    requests.push('');
-                    ch.close();
-                }
+                    } else {
+                        console.log("[AMQP XML Build] No message available");
+                        requests.push('');
+                        ch.close();
+                    }
 
-                conn.close();
-                console.log("[AMQP XML Build] Closed connection");
-                return callback(null, requests);
-            }
-             
+                    conn.close();
+                    console.log("[AMQP XML Build] Closed connection");
+                    return callback(null, requests);
+                });
+            });
         });
     });
 }
